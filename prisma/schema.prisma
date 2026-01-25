@@ -14,10 +14,25 @@ datasource db {
 }
 
 
+model Book {
+  id          String       @id @default(cuid())
+  title       String
+  author      String
+  coverImage  String?
+  summary     String       @db.Text
+  keyThemes   String[]
+  createdAt   DateTime     @default(now())
+  discussions Discussion[]
+}
+
 model Discussion {
   id        String    @id @default(cuid())
   title     String?   @default("New Discussion")
+  status    String    @default("active")
   createdAt DateTime  @default(now())
+  endedAt   DateTime?
+  bookId    String
+  book      Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
   messages  Message[]
   notes     Note[]
 }
@@ -32,9 +47,13 @@ model Message {
 }
 
 model Note {
-  id           String     @id @default(cuid())
-  content      String     @db.Text
-  createdAt    DateTime   @default(now())
-  discussionId String
-  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  id                  String     @id @default(cuid())
+  title               String?
+  content             String     @db.Text
+  knowledgeAssessment String?    @db.Text
+  perspectiveInsights String?    @db.Text
+  keyTakeaways        String[]
+  createdAt           DateTime   @default(now())
+  discussionId        String
+  discussion          Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
 }

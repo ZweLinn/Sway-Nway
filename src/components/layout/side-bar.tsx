@@ -1,4 +1,4 @@
-import { Home, NotebookText, Book, Search, Settings } from "lucide-react"
+import { Home, NotebookText, Book, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -11,7 +11,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import DiscussionList from "./discussion-list"
 
 // Menu items.
 const items = [
@@ -22,22 +21,17 @@ const items = [
   },
   {
     title: "Books",
-    url: "#",
+    url: "/books",
     icon: Book,
   },
   {
     title: "Notes",
-    url: "#",
+    url: "/notes",
     icon: NotebookText,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ]
@@ -66,8 +60,6 @@ export default function SideBar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        <DiscussionList />
       </SidebarContent>
     </Sidebar>
   )
