@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Discussion {
+  id        String    @id @default(cuid())
+  title     String?   @default("New Discussion")
+  createdAt DateTime  @default(now())
+  messages  Message[]
+  notes     Note[]
+}
+
+model Message {
+  id           String     @id @default(cuid())
+  role         String     // 'user' သို့မဟုတ် 'assistant'
+  content      String     @db.Text
+  createdAt    DateTime   @default(now())
+  discussionId String
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+}
+
+model Note {
+  id           String     @id @default(cuid())
+  content      String     @db.Text
+  createdAt    DateTime   @default(now())
+  discussionId String
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+}

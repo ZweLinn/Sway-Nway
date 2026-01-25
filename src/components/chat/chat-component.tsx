@@ -1,20 +1,64 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
-export default function ChatComponent() {
+interface ChatComponentProps {
+  discussionId: string;
+}
+
+interface DbMessage {
+  id: string;
+  role: string;
+  content: string;
+  createdAt: string;
+}
+
+export default function ChatComponent({ discussionId }: ChatComponentProps) {
   const [input, setInput] = useState<string>('');
-  const { messages, sendMessage, status ,error } = useChat();
+  const [isLoading, setIsLoading] = useState(true);
+  const initialMessagesLoaded = useRef(false);
+
+  const { messages, sendMessage, status, error, setMessages } = useChat();
+
+  // Load existing messages from DB on mount
+  useEffect(() => {
+    if (initialMessagesLoaded.current) return;
+    initialMessagesLoaded.current = true;
+
+    async function loadMessages() {
+      try {
+        const res = await fetch(`/api/discussions/${discussionId}`);
+        if (res.ok) {
+          const discussion = await res.json();
+          if (discussion.messages?.length > 0) {
+            const formattedMessages = discussion.messages.map((m: DbMessage) => ({
+              id: m.id,
+              role: m.role as 'user' | 'assistant',
+              parts: [{ type: 'text', text: m.content }],
+              createdAt: new Date(m.createdAt),
+            }));
+            setMessages(formattedMessages);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load messages:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadMessages();
+  }, [discussionId, setMessages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-    await sendMessage({ text: input });
+    await sendMessage({ text: input }, { body: { discussionId } });
     setInput('');
   };
 
@@ -39,6 +83,11 @@ export default function ChatComponent() {
             <div className="text-red-600 font-medium">Error: {error.message}</div>
           </div>
         )}
+        {isLoading ? (
+          <div className="max-w-2xl mx-auto px-4 py-6 text-center text-muted-foreground">
+            Loading conversation...
+          </div>
+        ) : (
         <div className="max-w-2xl mx-auto px-4 py-6">
           {messages.map(message => (
             <div
@@ -82,6 +131,7 @@ export default function ChatComponent() {
             </div>
           )}
         </div>
+        )}
       </ScrollArea>
 
       {/* Input Area */}
