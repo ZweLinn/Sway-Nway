@@ -61,8 +61,12 @@ Provide a JSON response with the following structure:
   "keyTakeaways": ["takeaway 1", "takeaway 2", "takeaway 3", ...]
 }
 
-Focus on what was actually discussed. Be constructive and encouraging in the assessment.
-Respond ONLY with valid JSON, no markdown formatting.`;
+IMPORTANT RULES:
+- Focus on what was actually discussed
+- Be constructive and encouraging in the assessment
+- Respond ONLY with valid JSON, no markdown formatting
+
+LANGUAGE: You MUST write ALL content (summary, knowledgeAssessment, perspectiveInsights, keyTakeaways) entirely in Burmese (Myanmar/မြန်မာဘာသာ). Use Myanmar script throughout. Only the JSON keys should remain in English.`;
 
     const { text } = await generateText({
       model: google('gemini-2.5-flash'),

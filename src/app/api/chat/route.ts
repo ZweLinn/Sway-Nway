@@ -35,12 +35,31 @@ LANGUAGE:
 - Otherwise, respond in the same language as the user`;
 }
 
+function getInitializationPrompt(book: Book): string {
+    return `You are starting a book discussion about "${book.title}" by ${book.author}.
+
+BOOK CONTENT: ${book.summary}
+KEY THEMES: ${book.keyThemes.join(', ')}
+
+YOUR TASK:
+1. Provide a SHORT engaging description of the book (2-3 sentences max)
+2. Ask ONE thought-provoking question to begin the discussion
+
+IMPORTANT RULES:
+- Keep introduction brief and inviting
+- Ask only ONE clear, open-ended question
+- Make the reader feel excited to share their thoughts
+
+LANGUAGE: You MUST respond entirely in Burmese (Myanmar/မြန်မာဘာသာ). Use Myanmar script throughout.`;
+}
+
 export async function POST(req: Request) {
     try {
-        const { messages, discussionId, bookId }: {
+        const { messages, discussionId, bookId, isInitialization }: {
             messages: UIMessage[];
             discussionId?: string;
             bookId?: string;
+            isInitialization?: boolean;
         } = await req.json();
 
         // Get book details if bookId is provided
@@ -55,6 +74,27 @@ export async function POST(req: Request) {
                     keyThemes: true,
                 },
             });
+        }
+
+        // Handle AI initialization (no prior user message needed)
+        if (isInitialization && book && discussionId) {
+            const stream = streamText({
+                model: google('gemini-2.5-flash'),
+                messages: [{ role: 'user', content: 'Start the discussion.' }],
+                system: getInitializationPrompt(book),
+                async onFinish({ text }) {
+                    if (text) {
+                        await prisma.message.create({
+                            data: {
+                                role: 'assistant',
+                                content: text,
+                                discussionId,
+                            },
+                        });
+                    }
+                },
+            });
+            return stream.toUIMessageStreamResponse();
         }
 
         // Save user message to DB if discussionId is provided

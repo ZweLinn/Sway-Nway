@@ -1,7 +1,7 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -41,9 +41,32 @@ export default function BookDiscussionChat({
 }: BookDiscussionChatProps) {
   const [input, setInput] = useState<string>('');
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(false);
   const initialMessagesLoaded = useRef(false);
+  const initializationTriggered = useRef(false);
 
   const { messages, sendMessage, status, error, setMessages } = useChat();
+
+  // Initialize discussion with AI intro when no messages exist
+  const initializeDiscussion = useCallback(async () => {
+    if (initializationTriggered.current) return;
+    if (discussion.status === 'ended') return;
+
+    initializationTriggered.current = true;
+    setIsInitializing(true);
+
+    try {
+      await sendMessage(
+        { text: '__INIT__' },
+        { body: { discussionId: discussion.id, bookId: book.id, isInitialization: true } }
+      );
+    } catch (err) {
+      console.error('Failed to initialize discussion:', err);
+      initializationTriggered.current = false; // Allow retry on failure
+    } finally {
+      setIsInitializing(false);
+    }
+  }, [sendMessage, discussion.id, discussion.status, book.id]);
 
   // Load existing messages from DB on mount
   useEffect(() => {
@@ -58,9 +81,21 @@ export default function BookDiscussionChat({
         createdAt: new Date(m.createdAt),
       }));
       setMessages(formattedMessages);
+    } else {
+      // No existing messages, trigger AI initialization
+      initializeDiscussion();
     }
     setIsInitialLoading(false);
-  }, [discussion.messages, setMessages]);
+  }, [discussion.messages, setMessages, initializeDiscussion]);
+
+  // Filter out the __INIT__ placeholder message from display
+  const displayMessages = messages.filter((m) => {
+    if (m.role === 'user') {
+      const text = m.parts?.find((p) => p.type === 'text')?.text;
+      return text !== '__INIT__';
+    }
+    return true;
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,14 +142,14 @@ export default function BookDiscussionChat({
           </div>
         ) : (
           <div className="max-w-2xl mx-auto px-4 py-6">
-            {messages.length === 0 && (
+            {displayMessages.length === 0 && !isInitializing && status !== 'streaming' && status !== 'submitted' && (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
                   Start the discussion by sending a message
                 </p>
               </div>
             )}
-            {messages.map((message) => (
+            {displayMessages.map((message) => (
               <div
                 key={message.id}
                 className={`py-6 ${message.role === 'user' ? '' : 'bg-muted/50'} -mx-4 px-4`}
@@ -148,7 +183,20 @@ export default function BookDiscussionChat({
                 </div>
               </div>
             ))}
-            {(status === 'submitted' || status === 'streaming') && (
+            {(status === 'submitted' || status === 'streaming' || isInitializing) && displayMessages.length === 0 && (
+              <div className="py-6 -mx-4 px-4">
+                <div className="flex gap-4 max-w-2xl mx-auto">
+                  <Avatar className="shrink-0 mt-1">
+                    <AvatarFallback className="bg-muted">AI</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 space-y-2">
+                    <p className="font-medium text-sm">Discussion Guide</p>
+                    <p className="text-muted-foreground italic">Preparing discussion...</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {(status === 'submitted' || status === 'streaming') && displayMessages.length > 0 && (
               <div className="py-6 -mx-4 px-4">
                 <div className="flex gap-4 max-w-2xl mx-auto">
                   <Avatar className="shrink-0 mt-1">

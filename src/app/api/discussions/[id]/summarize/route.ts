@@ -57,8 +57,8 @@ export async function POST(req: Request, { params }: Params) {
     // Generate summary using AI
     const { text: summary } = await generateText({
       model: google('gemini-2.5-flash-lite'),
-      system: 'You are a helpful assistant that summarizes conversations. Create a concise, clear summary of the key points discussed. Use bullet points for clarity.',
-      prompt: `Please summarize the following discussion:\n\n${conversationText}`,
+      system: 'You are a helpful assistant that summarizes conversations. Create a concise, clear summary of the key points discussed. Use bullet points for clarity. IMPORTANT: You MUST write the entire summary in Burmese (Myanmar/မြန်မာဘာသာ). Use Myanmar script throughout.',
+      prompt: `Please summarize the following discussion in Burmese:\n\n${conversationText}`,
     });
 
     // Save summary as a note
