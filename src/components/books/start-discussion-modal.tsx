@@ -47,10 +47,11 @@ export default function StartDiscussionModal({
       if (res.ok) {
         const discussion = await res.json();
         router.push(`/books/${book.id}/discussion/${discussion.id}`);
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Failed to start discussion:', error);
-    } finally {
       setIsLoading(false);
     }
   };
