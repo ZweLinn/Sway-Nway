@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
+import { getCurrentUser } from '@/lib/auth';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -15,6 +16,11 @@ interface AnalysisResult {
 // POST /api/discussions/[id]/end - End discussion and create analysis
 export async function POST(req: Request, { params }: Params) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id } = await params;
 
     // Fetch discussion with messages and book
@@ -33,6 +39,10 @@ export async function POST(req: Request, { params }: Params) {
         { error: 'Discussion not found' },
         { status: 404 }
       );
+    }
+
+    if (discussion.userId && discussion.userId !== user.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     if (discussion.status === 'ended') {

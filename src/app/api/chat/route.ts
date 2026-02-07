@@ -55,6 +55,12 @@ LANGUAGE: You MUST respond entirely in Burmese (Myanmar/မြန်မာဘာ
 
 export async function POST(req: Request) {
     try {
+        const { getCurrentUser } = await import('@/lib/auth');
+        const user = await getCurrentUser();
+        if (!user) {
+            return new Response('Unauthorized', { status: 401 });
+        }
+
         const { messages, discussionId, bookId, isInitialization }: {
             messages: UIMessage[];
             discussionId?: string;

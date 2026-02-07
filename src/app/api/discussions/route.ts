@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
 
-// GET /api/discussions - List all discussions
+// GET /api/discussions - List user's discussions
 export async function GET() {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const discussions = await prisma.discussion.findMany({
+      where: { userId: user.id },
       orderBy: { createdAt: 'desc' },
       include: {
         book: {

@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import BookDiscussionChat from '@/components/chat/book-discussion-chat';
 
@@ -7,6 +8,7 @@ type Params = {
 };
 
 export default async function BookDiscussionPage({ params }: Params) {
+  const user = await getCurrentUser();
   const { bookId, discussionId } = await params;
 
   const [book, discussion] = await Promise.all([
@@ -22,6 +24,10 @@ export default async function BookDiscussionPage({ params }: Params) {
   ]);
 
   if (!book || !discussion) {
+    notFound();
+  }
+
+  if (discussion.userId && discussion.userId !== user?.id) {
     notFound();
   }
 

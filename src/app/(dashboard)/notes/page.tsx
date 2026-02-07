@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
 import NoteList from '@/components/notes/note-list';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -23,7 +24,12 @@ function NoteListSkeleton() {
 }
 
 export default async function NotesPage() {
+  const user = await getCurrentUser();
+
   const notes = await prisma.note.findMany({
+    where: {
+      discussion: { userId: user?.id },
+    },
     orderBy: { createdAt: 'desc' },
     include: {
       discussion: {

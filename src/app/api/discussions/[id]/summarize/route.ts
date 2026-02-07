@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
+import { getCurrentUser } from '@/lib/auth';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -16,6 +17,7 @@ interface DbMessage {
 interface DiscussionWithMessages {
   id: string;
   title: string | null;
+  userId: string | null;
   createdAt: Date;
   messages: DbMessage[];
 }
@@ -23,6 +25,11 @@ interface DiscussionWithMessages {
 // POST /api/discussions/[id]/summarize - AI summarize discussion & save as note
 export async function POST(req: Request, { params }: Params) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id: discussionId } = await params;
 
     // Fetch all messages from the discussion
@@ -40,6 +47,10 @@ export async function POST(req: Request, { params }: Params) {
         { error: 'Discussion not found' },
         { status: 404 }
       );
+    }
+
+    if (discussion.userId && discussion.userId !== user.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     if (discussion.messages.length === 0) {

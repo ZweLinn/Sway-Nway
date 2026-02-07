@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
 
 type Params = { params: Promise<{ id: string }> };
 
 // POST /api/discussions/[id]/messages - Save a message
 export async function POST(req: Request, { params }: Params) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id: discussionId } = await params;
     const { role, content } = await req.json();
 

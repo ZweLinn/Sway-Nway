@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
 
 type Params = { params: Promise<{ id: string }> };
 
 // GET /api/discussions/[id]/notes - Get all notes for a discussion
 export async function GET(req: Request, { params }: Params) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id: discussionId } = await params;
 
     const notes = await prisma.note.findMany({
@@ -26,6 +32,11 @@ export async function GET(req: Request, { params }: Params) {
 // POST /api/discussions/[id]/notes - Create a note
 export async function POST(req: Request, { params }: Params) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id: discussionId } = await params;
     const { content } = await req.json();
 
