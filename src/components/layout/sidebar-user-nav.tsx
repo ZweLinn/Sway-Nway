@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 
-function getInitials(name: string | null | undefined): string {
+export function getInitials(name: string | null | undefined): string {
   if (!name) return "U";
   return name
     .split(" ")

@@ -1,3 +1,6 @@
-export default function SettingsPage(){
-    return <div>Settings Page</div>
+
+import UserSettings from "@/components/settings/user-setting";
+
+export default function SettingsPage() {
+  return <UserSettings />;
 }
