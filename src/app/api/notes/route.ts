@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
 // GET /api/notes - List user's notes with book info
 export async function GET() {
   try {
