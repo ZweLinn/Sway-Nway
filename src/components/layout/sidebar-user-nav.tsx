@@ -41,8 +41,13 @@ export default function SidebarUserNav() {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start text-left leading-tight">
-            <span className="text-sm font-medium truncate max-w-[140px]">
+            <span className="text-sm font-medium truncate max-w-[140px] flex items-center gap-1.5">
               {name}
+              {session.user.role === "ADMIN" && (
+                <span className="text-[10px] font-semibold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">
+                  Admin
+                </span>
+              )}
             </span>
             <span className="text-xs text-muted-foreground truncate max-w-[140px]">
               {email}

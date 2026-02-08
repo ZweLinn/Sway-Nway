@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/admin';
 
 // GET /api/books - List all books
 export async function GET() {
@@ -23,9 +24,12 @@ export async function GET() {
   }
 }
 
-// POST /api/books - Create new book
+// POST /api/books - Create new book (admin only)
 export async function POST(req: Request) {
   try {
+    const { error } = await requireAdmin();
+    if (error) return error;
+
     const { title, author, coverImage, summary, keyThemes } = await req.json();
 
     if (!title || !author || !summary) {

@@ -1,4 +1,4 @@
-import { Home, NotebookText, Book, Settings } from "lucide-react"
+import { Home, NotebookText, Book, Settings , UserStar } from "lucide-react"
 
 import {
   Sidebar,
@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import SidebarUserNav from "@/components/layout/sidebar-user-nav"
+import { getCurrentUser } from "@/lib/auth"
 
-// Menu items.
-const items = [
+const baseItems = [
   {
     title: "Home",
     url: "/",
@@ -35,10 +35,20 @@ const items = [
     title: "Settings",
     url: "/settings",
     icon: Settings,
-  },
+  }
 ]
 
-export default function SideBar() {
+const settingsItem = {
+  title: "Admin",
+  url: "/admin/settings",
+  icon: UserStar,
+}
+
+export default async function SideBar() {
+  const user = await getCurrentUser()
+  const isAdmin = user?.role === "ADMIN"
+  const items = isAdmin ? [...baseItems, settingsItem] : baseItems
+
   return (
     <Sidebar>
       <SidebarContent>

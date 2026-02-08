@@ -2,8 +2,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ArrowRight, Play } from "lucide-react";
+import { getCurrentUser } from "@/lib/auth";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
+  
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4">
       {/* Background gradient */}
@@ -34,7 +37,7 @@ export default function Home() {
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
         <Button size="lg" className="cursor-pointer" asChild>
-          <Link href="/auth/signin">
+          <Link href={ user?.id === null ? `/auth/signin` : `/books`}>
             Get Started for Free
             <ArrowRight className="w-4 h-4 ml-2" />
           </Link>

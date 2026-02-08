@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/admin';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -34,9 +35,12 @@ export async function GET(req: Request, { params }: Params) {
   }
 }
 
-// PUT /api/books/[id] - Update book
+// PUT /api/books/[id] - Update book (admin only)
 export async function PUT(req: Request, { params }: Params) {
   try {
+    const { error } = await requireAdmin();
+    if (error) return error;
+
     const { id } = await params;
     const { title, author, coverImage, summary, keyThemes } = await req.json();
 
@@ -61,9 +65,12 @@ export async function PUT(req: Request, { params }: Params) {
   }
 }
 
-// DELETE /api/books/[id] - Delete book
+// DELETE /api/books/[id] - Delete book (admin only)
 export async function DELETE(req: Request, { params }: Params) {
   try {
+    const { error } = await requireAdmin();
+    if (error) return error;
+
     const { id } = await params;
 
     await prisma.book.delete({
