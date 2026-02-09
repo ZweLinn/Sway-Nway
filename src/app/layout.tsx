@@ -16,7 +16,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Sway Nway",
-  description: "A next-gen AI chat experience.",
+  description: "A book discussion platform powered by AI.",
+  openGraph : {
+    title: "Sway Nway",
+    description: "A book discussion platform powered by AI.",
+    type: "website",
+    url: "https://swaynway.com",
+  }
 
 };
 

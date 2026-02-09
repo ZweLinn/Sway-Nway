@@ -19,7 +19,7 @@ export default function BookCard({ book, onClick }: BookCardProps) {
       className="cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]"
       onClick={onClick}
     >
-      <CardHeader className="pb-3">
+      <CardHeader>
         <div className="aspect-[3/4] relative bg-muted rounded-md flex items-center justify-center overflow-hidden mb-3">
           {book.coverImage ? (
             <img
@@ -31,9 +31,9 @@ export default function BookCard({ book, onClick }: BookCardProps) {
             <Book className="h-16 w-16 text-muted-foreground" />
           )}
         </div>
-        <CardTitle className="line-clamp-2 text-base">{book.title}</CardTitle>
+        <CardTitle className="line-clamp-2 text-base text-sm sm:text-base">{book.title}</CardTitle>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent >
         <p className="text-sm text-muted-foreground">{book.author}</p>
       </CardContent>
     </Card>

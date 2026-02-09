@@ -148,9 +148,9 @@ export default function NoteCard({ note, highlighted = false }: NoteCardProps) {
               <h4 className="font-medium mb-3">Key Takeaways</h4>
               <div className="flex flex-wrap gap-2">
                 {note.keyTakeaways.map((takeaway, index) => (
-                  <Badge key={index} variant="secondary">
+                  <span key={index}  className="text-[12px] text-muted-foreground whitespace-pre-wrap">
                     {takeaway}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             </div>
