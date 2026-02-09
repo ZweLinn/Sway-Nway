@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sway Nway",
   description: "A next-gen AI chat experience.",
+
 };
 
 export default function RootLayout({

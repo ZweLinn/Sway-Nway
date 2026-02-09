@@ -18,7 +18,7 @@ import { getCurrentUser } from "@/lib/auth"
 const baseItems = [
   {
     title: "Home",
-    url: "/",
+    url: "/home",
     icon: Home,
   },
   {

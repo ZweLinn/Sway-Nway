@@ -110,7 +110,7 @@ export default function UserSettings() {
         <section className="space-y-4">
           <h2 className="text-xl font-semibold">Account</h2>
           <Card>
-            <CardContent className="flex items-center justify-between">
+            <CardContent className="flex flex-col sm:flex-row items-center justify-between">
               <div className="flex items-center space-x-4">
                 <div className="p-2 bg-muted rounded-full">
                   <Avatar className="h-7 w-7">
