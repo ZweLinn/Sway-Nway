@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "https://sway-nway-production.up.railway.app",
+  ),
   title: "Sway Nway",
   description: "A book discussion platform powered by AI.",
   openGraph : {
