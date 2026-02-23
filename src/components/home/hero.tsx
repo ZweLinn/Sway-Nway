@@ -42,10 +42,6 @@ export default async function Hero() {
             <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
         </Button>
-        <Button size="lg" variant="outline" className="cursor-pointer">
-          <Play className="w-4 h-4 mr-2" />
-          Watch Demo
-        </Button>
       </div>
     </div>
   );
