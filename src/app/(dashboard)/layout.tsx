@@ -7,7 +7,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="flex flex-col sm:flex-row">
       <SideBar />
       <SidebarTrigger className="p-5" />
       <main className="w-full">{children}</main>
