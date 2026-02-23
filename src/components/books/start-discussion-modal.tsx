@@ -68,7 +68,7 @@ export default function StartDiscussionModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex gap-4 py-4">
+        <div className="flex flex-col sm:flex-row gap-4 py-4">
           <div className="w-24 h-32 bg-muted rounded-md flex items-center justify-center flex-shrink-0 overflow-hidden">
             {book.coverImage ? (
               <img

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Sway Nway",
     description: "A book discussion platform powered by AI.",
     type: "website",
-    url: "https://swaynway.com",
+    url: "https://swaynway.site",
   }
 
 };
