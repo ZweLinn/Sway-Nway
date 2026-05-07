@@ -1,8 +1,6 @@
-```markdown
 # 🚀 Sway-Nway
 
 <div align="center">
-
 
 [![GitHub stars](https://img.shields.io/github/stars/ZweLinn/Sway-Nway?style=for-the-badge)](https://github.com/ZweLinn/Sway-Nway/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/ZweLinn/Sway-Nway?style=for-the-badge)](https://github.com/ZweLinn/Sway-Nway/network)
@@ -21,35 +19,36 @@ Sway-Nway is an innovative web application designed to foster engaging discussio
 
 ## ✨ Features
 
--   **AI-Powered Insights:** Leverage AI to generate summaries, discuss plot points, or answer questions about books, enhancing the depth of conversations.
+-   **AI-Powered Insights:** Leverage Google Gemini to generate summaries, discuss plot points, or answer questions about books, enhancing the depth of conversations.
 -   **Interactive Discussion Forums:** Create and participate in threaded discussions for individual books, fostering a vibrant community.
 -   **Book Management:** Explore a curated collection of books and manage personal reading lists.
--   **User Authentication & Profiles:** Secure user registration, login, and personalized profiles to track activity.
--   **Responsive Design:** A seamless and engaging user experience across all devices, from desktop to mobile.
--   **Modern & Accessible UI:** Beautifully crafted user interface utilizing Shadcn UI components and Tailwind CSS.
+-   **User Authentication & Profiles:** Secure user registration via Google and GitHub, with personalized profiles.
+-   **Multilingual Support:** Engaging discussions in both English and Burmese (Myanmar).
+-   **Responsive Design:** A seamless experience across all devices, from desktop to mobile.
+-   **Modern & Accessible UI:** Beautifully crafted user interface utilizing Radix UI, Shadcn UI, and Tailwind CSS 4.
 -   **Robust Data Persistence:** Reliable storage and management of application data using PostgreSQL and Prisma ORM.
 
 ## 🖥️ Screenshots
 
-![Home Page] (images\image.png)
-![Books Page] (images\image_1.png)
-![Note Page] (images\image_2.png)
-![Setting Page] (images\image_3.png)
+![Home Page](public/images/image.png)
+![Books Page](public/images/image_1.png)
+![Note Page](public/images/image_2.png)
+![Setting Page](public/images/image_3.png)
 
 ## 🛠️ Tech Stack
 
 **Frontend:**
-![Next.js](https://img.shields.io/badge/Next.js-Black?style=for-the-badge&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Next.js](https://img.shields.io/badge/Next.js_15-Black?style=for-the-badge&logo=next.js&logoColor=white)
+![React 19](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS_4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
-![AI SDK](https://img.shields.io/badge/AI_SDK-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 **Backend:**
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![Next.js API Routes](https://img.shields.io/badge/Next.js_API-Black?style=for-the-badge&logo=next.js&logoColor=white)
-![AI SDK (OpenAI)](https://img.shields.io/badge/OpenAI_AI_SDK-000000?style=for-the-badge&logo=openai&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google_Gemini-4285F4?style=for-the-badge&logo=google-gemini&logoColor=white)
 
 **Database:**
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -66,8 +65,8 @@ Follow these steps to get Sway-Nway up and running on your local machine.
 ### Prerequisites
 Before you begin, ensure you have the following installed:
 -   **Node.js**: v18.x or higher (recommended LTS v20.x)
--   **pnpm**: (recommended package manager) or npm/yarn
--   **PostgreSQL**: A running instance of PostgreSQL. You can use Docker or a local installation.
+-   **pnpm**: (recommended package manager)
+-   **PostgreSQL**: A running instance of PostgreSQL.
 
 ### Installation
 
@@ -79,14 +78,7 @@ Before you begin, ensure you have the following installed:
 
 2.  **Install dependencies**
     ```bash
-    # Using pnpm (recommended)
     pnpm install
-
-    # Or using npm
-    # npm install
-
-    # Or using yarn
-    # yarn install
     ```
 
 3.  **Environment setup**
@@ -94,13 +86,13 @@ Before you begin, ensure you have the following installed:
     ```bash
     cp .env.example .env
     ```
-    Now, open `.env` and configure your environment variables:
+    Open `.env` and configure your environment variables (see [Configuration](#-configuration)).
 
 4.  **Database setup**
-    Ensure your PostgreSQL database is running and accessible via the `DATABASE_URL` in your `.env` file. Then, apply Prisma migrations and generate the Prisma client:
+    Ensure your PostgreSQL database is running. Then, apply Prisma schema and generate the client:
     ```bash
-    pnpm prisma db push # Applies migrations to the database
-    pnpm prisma generate # Generates Prisma client (also run automatically by postinstall)
+    pnpm prisma db push
+    pnpm prisma generate
     ```
 
 5.  **Start development server**
@@ -109,48 +101,31 @@ Before you begin, ensure you have the following installed:
     ```
 
 6.  **Open your browser**
-    Visit `http://localhost:3000` (or the port specified in your `next.config.ts` or `.env` if changed).
+    Visit `http://localhost:3000`.
 
 ## 📁 Project Structure
 
 ```
 Sway-Nway/
-├── .gitignore
-├── LICENSE
-├── README.md
-├── components.json         # Configuration for Shadcn UI components
-├── eslint.config.mjs       # ESLint configuration
-├── next.config.ts          # Next.js configuration
-├── package-lock.json       # npm lock file
-├── package.json            # Project dependencies and scripts
-├── pnpm-lock.yaml          # pnpm lock file
-├── postcss.config.mjs      # PostCSS configuration (used by Tailwind CSS)
-├── prisma.config.ts        # Prisma ORM configuration
 ├── prisma/                 # Prisma schema and migrations
-│   ├── schema.prisma       # Database schema definition
-│   └── migrations/         # Database migration history
+│   └── schema.prisma       # Database schema definition
 ├── public/                 # Static assets (images, favicon, etc.)
-│   ├── favicon.ico
-│   └── vercel.svg
-├── scripts/                # Utility scripts (e.g., database seeding)
+│   └── images/             # Screenshot and assets
+├── scripts/                # Utility scripts (e.g., promote-admin.mjs)
 ├── src/                    # Main application source code
-│   ├── app/                # Next.js App Router root
-│   │   ├── (auth)/         # Grouped authentication routes/pages
-│   │   ├── api/            # Next.js API Routes (e.g., `/api/chat`, `/api/auth`)
-│   │   │   ├── auth/
-│   │   │   └── chat/
-│   │   ├── global.css      # Global styles (Tailwind directives)
-│   │   ├── layout.tsx      # Root layout component
-│   │   └── page.tsx        # Root page component
-│   ├── components/         # Reusable UI components
-│   │   ├── ui/             # Shadcn UI base components (e.g., button, card)
-│   │   └── common/         # Project-specific common components
-│   ├── lib/                # Backend & utility logic (e.g., Prisma client, AI client)
-│   │   ├── db.ts           # Prisma client instance
-│   │   └── utils.ts        # General utility functions
-│   └── types/              # Custom TypeScript type definitions
-├── tsconfig.json           # TypeScript configuration
-└── tailwind.config.ts      # Tailwind CSS configuration
+│   ├── app/                # Next.js App Router (pages and API routes)
+│   │   ├── (dashboard)/    # Authenticated dashboard routes
+│   │   ├── api/            # API Endpoints (chat, books, discussions)
+│   │   └── auth/           # Custom auth pages
+│   ├── components/         # Reusable React components
+│   │   ├── ui/             # Shadcn UI base components
+│   │   └── chat/           # Feature-specific components
+│   ├── lib/                # Shared utilities and Prisma client
+│   ├── hooks/              # Custom React hooks
+│   └── types/              # TypeScript definitions
+├── next.config.ts          # Next.js configuration
+├── package.json            # Project dependencies and scripts
+└── tsconfig.json           # TypeScript configuration
 ```
 
 ## ⚙️ Configuration
@@ -158,103 +133,47 @@ Sway-Nway/
 ### Environment Variables
 Configure these variables in your `.env` file:
 
-| Variable             | Description                                   | Required |
-|----------------------|-----------------------------------------------|----------|
-| `DATABASE_URL`       | Connection string for your PostgreSQL database | Yes      |
-| `OPENAI_API_KEY`     | API key for OpenAI (or compatible AI service) | Yes      |
-| `NEXTAUTH_SECRET`    | Secret for NextAuth.js (if used for auth)     | No       |
-| `NEXTAUTH_URL`       | The canonical URL of your application         | No       |
-| `NEXT_PUBLIC_APP_URL`| Public URL for the frontend                   | No       |
-
-### Configuration Files
--   `next.config.ts`: General Next.js application configuration.
--   `postcss.config.mjs`: PostCSS setup, including Tailwind CSS.
--   `tailwind.config.ts`: Tailwind CSS specific customizations.
--   `eslint.config.mjs`: ESLint rules for code quality and consistency.
--   `components.json`: Configuration for Shadcn UI components.
--   `prisma.config.ts`: Prisma CLI and client generation options.
--   `tsconfig.json`: TypeScript compiler options.
+| Variable                     | Description                                   | Required |
+|------------------------------|-----------------------------------------------|----------|
+| `DATABASE_URL`               | Connection string for PostgreSQL              | Yes      |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | API key for Google Gemini AI                | Yes      |
+| `GOOGLE_CLIENT_ID`           | Google OAuth Client ID                        | Yes      |
+| `GOOGLE_CLIENT_SECRET`       | Google OAuth Client Secret                    | Yes      |
+| `GITHUB_CLIENT_ID`           | GitHub OAuth Client ID                        | Yes      |
+| `GITHUB_CLIENT_SECRET`       | GitHub OAuth Client Secret                    | Yes      |
+| `NEXTAUTH_SECRET`            | Secret for NextAuth.js JWT encryption         | Yes      |
+| `NEXTAUTH_URL`               | The canonical URL of your application         | Yes (Prod)|
 
 ## 🔧 Development
 
 ### Available Scripts
-In the project directory, you can run:
-
 | Command           | Description                                       |
 |-------------------|---------------------------------------------------|
 | `pnpm dev`        | Starts the development server at `localhost:3000`.|
-| `pnpm build`      | Creates a production-ready build of the application.|
-| `pnpm start`      | Starts the Next.js production server.             |
-| `pnpm lint`       | Runs ESLint to check for code quality issues.     |
-| `pnpm prisma db push` | Pushes the Prisma schema to the database, creating or updating tables. |
-| `pnpm prisma generate` | Generates the Prisma client based on `schema.prisma`. |
-
-### Development Workflow
-1.  Ensure all prerequisites are met and environment variables are configured.
-2.  Start the development server using `pnpm dev`.
-3.  Any changes to the source code will trigger a hot reload.
-4.  Run `pnpm lint` regularly to maintain code quality.
+| `pnpm build`      | Creates a production-ready build.                 |
+| `pnpm start`      | Starts the production server.                     |
+| `pnpm lint`       | Runs ESLint checks.                               |
+| `pnpm prisma db push` | Pushes the Prisma schema to the database.     |
+| `pnpm prisma generate` | Generates the Prisma client.                  |
 
 ## 🚀 Deployment
 
-To deploy Sway-Nway to a production environment:
-
-1.  **Build the application:**
-    ```bash
-    pnpm build
-    ```
-    This command compiles the Next.js application into optimized static assets and server-side code.
-
-2.  **Start the production server:**
-    ```bash
-    pnpm start
-    ```
-    This will serve the production build of the application.
-
-### Deployment Options
--   **Vercel:** As a Next.js application, Sway-Nway is ideally suited for deployment on [Vercel](https://vercel.com/), which provides a seamless deployment experience with automatic scaling, CI/CD, and serverless functions.
--   **Docker:** You can containerize the application using Docker for deployment to any container-compatible environment.
--   **Self-Hosting:** Deploy to any Node.js compatible server. Ensure correct environment variables are set and a process manager like PM2 is used for stability.
-
-## 📚 API Reference
-
-Sway-Nway utilizes Next.js API Routes for its backend functionalities. You can find the definitions for these API endpoints within the `src/app/api/` directory.
-
-### Example Endpoints (Inferred)
-
--   `/api/chat`: Handles AI interactions, such as generating book summaries or responding to queries.
--   `/api/auth/[...nextauth]`: Handles user authentication flows (if NextAuth.js is implemented).
--   `/api/books`: Manages book-related data, such as fetching book details or creating new entries.
--   `/api/discussions`: Manages discussion threads and comments.
+The easiest way to deploy Sway-Nway is via [Vercel](https://vercel.com/), which provides native support for Next.js, including serverless functions for the API and AI streaming.
 
 ## 🤝 Contributing
 
-We welcome contributions to Sway-Nway! If you're interested in improving the platform, please consider:
--   Forking the repository.
--   Creating a new branch for your feature or bug fix.
--   Submitting a pull request with a clear description of your changes.
-
-Please refer to the existing code style and ensure your changes pass linting checks.
-
-### Development Setup for Contributors
-The development setup is the same as described in the [Quick Start](#🚀-quick-start) section.
+We welcome contributions! Please fork the repository, create a feature branch, and submit a pull request.
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
--   Built with [Next.js](https://nextjs.org/) and [React](https://react.dev/).
--   Styling provided by [Tailwind CSS](https://tailwindcss.com/) and [Shadcn UI](https://ui.shadcn.com/).
--   Database management powered by [PostgreSQL](https://www.postgresql.org/) and [Prisma ORM](https://www.prisma.io/).
--   AI capabilities enabled by [Vercel AI SDK](https://sdk.vercel.ai/) and [OpenAI](https://openai.com/).
-
-## 📞 Support & Contact
-
-If you have any questions, feedback, or encounter issues, please feel free to:
--   📧 Contact the repository owner: [ZweLinn](https://github.com/ZweLinn)
--   🐛 Open an issue: [GitHub Issues](https://github.com/ZweLinn/Sway-Nway/issues)
+-   Built with [Next.js](https://nextjs.org/) and [React 19](https://react.dev/).
+-   AI capabilities powered by [Google Gemini](https://ai.google.dev/) and [Vercel AI SDK](https://sdk.vercel.ai/).
+-   Database management via [Prisma ORM](https://www.prisma.io/).
+-   UI Components from [Radix UI](https://www.radix-ui.com/) and [Shadcn UI](https://ui.shadcn.com/).
 
 ---
 
@@ -265,4 +184,3 @@ If you have any questions, feedback, or encounter issues, please feel free to:
 Made with ❤️ by [ZweLinn](https://github.com/ZweLinn)
 
 </div>
-```
