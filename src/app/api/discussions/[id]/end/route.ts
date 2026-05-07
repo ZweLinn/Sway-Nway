@@ -126,10 +126,16 @@ LANGUAGE: You MUST write ALL content (summary, knowledgeAssessment, perspectiveI
       noteId: note.id,
     });
   } catch (error) {
-    console.error('Error ending discussion:', error);
-    return NextResponse.json(
-      { error: 'Failed to end discussion' },
-      { status: 500 }
-    );
+    console.error('Error:', error);
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (message.includes('high demand') || message.includes('503')) {
+      return NextResponse.json(
+        { error: 'AI is temporarily busy. Please try again.' },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json({ error: 'Failed' }, { status: 500 });
   }
 }

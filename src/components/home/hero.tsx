@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/auth";
 
 export default async function Hero() {
   const user = await getCurrentUser();
-  
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4">
       {/* Background gradient */}
@@ -29,15 +29,15 @@ export default async function Hero() {
         {/* Description */}
         <p className="max-w-xl mx-auto text-base sm:text-lg text-muted-foreground">
           Engage in deep book dialogues on Sway Nway. Our AI automatically
-          summarizes your chats and analyzes key themes so you never lose
-          a &ldquo;Eureka!&rdquo; moment.
+          summarizes your chats and analyzes key themes so you never lose a
+          &ldquo;Eureka!&rdquo; moment.
         </p>
       </div>
 
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
         <Button size="lg" className="cursor-pointer" asChild>
-          <Link href={ user?.id === null ? `/auth/signin` : `/books`}>
+          <Link href={user?.id === null ? `/auth/signin` : `/books`}>
             Get Started for Free
             <ArrowRight className="w-4 h-4 ml-2" />
           </Link>

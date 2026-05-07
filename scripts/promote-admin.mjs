@@ -25,13 +25,15 @@ if (!email) {
 
 const result = await pool.query(
   `UPDATE "User" SET "role" = 'ADMIN' WHERE "email" = $1 RETURNING "email", "role"`,
-  [email]
+  [email],
 );
 
 if (result.rowCount === 0) {
   console.error(`No user found with email: ${email}`);
 } else {
-  console.log(`Updated: ${result.rows[0].email} -> role: ${result.rows[0].role}`);
+  console.log(
+    `Updated: ${result.rows[0].email} -> role: ${result.rows[0].role}`,
+  );
 }
 
 await pool.end();

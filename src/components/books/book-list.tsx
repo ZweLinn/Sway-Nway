@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import BookCard from './book-card';
-import StartDiscussionModal from './start-discussion-modal';
+import { useState } from "react";
+import BookCard from "./book-card";
+import StartDiscussionModal from "./start-discussion-modal";
 
 interface Book {
   id: string;

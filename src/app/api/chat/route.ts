@@ -148,6 +148,16 @@ export async function POST(req: Request) {
     }
     catch (error) {
         console.error('Error in completion route:', error);
+
+        const message = error instanceof Error ? error.message : String(error);
+
+        if (message.includes('high demand') || message.includes('overloaded') || message.includes('503')) {
+            return new Response(
+                JSON.stringify({ error: 'AI is temporarily busy. Please try again in a moment.' }),
+                { status: 503, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
         return new Response('Internal Server Error', { status: 500 });
     }
 }
